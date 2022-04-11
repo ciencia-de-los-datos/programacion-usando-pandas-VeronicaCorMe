@@ -62,9 +62,12 @@ def pregunta_03():
     Name: _c1, dtype: int64
 
     """
-
-    conteo_c1= tbl0._c1.value_counts()
-    return conteo_c1
+    conteo_c1=tbl0._c1.sort_values()
+    conteo_c1= conteo_c1.value_counts(sort= False)
+    
+    
+    return  conteo_c1
+    
 
 
 def pregunta_04():
