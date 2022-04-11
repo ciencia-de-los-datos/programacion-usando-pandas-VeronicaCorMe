@@ -22,7 +22,14 @@ def pregunta_01():
     40
 
     """
-    return
+    #la importacion de pandas permite la lectura de archivos csv directamente como "data frames" de ahi que podamos aplicar
+    # metodos y funciones propios de objetos directamente a la variable que contiene los datos sin tener que recorrerla.
+    #el truco es que se entiende cada elemento de la base de datos como un elemento con un tipo determinado
+    # y no como strings o cadenas de texto
+
+    len_t=len(tbl0)
+    return len_t
+
 
 
 def pregunta_02():
@@ -33,7 +40,12 @@ def pregunta_02():
     4
 
     """
-    return
+    #el metodo .shape devuelve una tupla (fila, columnas) del archivo csv, por lectura de tuplas si solo
+    # se necesitan las columnas, solo se necesita tomar el elemento 2 de la tupla generada por .shape 
+    cant_col=tbl0.shape
+
+    return cant_col[1]
+
 
 
 def pregunta_03():
