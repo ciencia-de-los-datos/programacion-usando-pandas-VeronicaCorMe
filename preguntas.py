@@ -188,10 +188,13 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    años=[int(x[:4]) for x in tbl0._c3]
+    fechas=pd.to_datetime(tbl0._c3,infer_datetime_format=True, errors= "ignore" )
+    años=[int(x[:4]) for x in fechas]
     tb_nuevo=tbl0.assign(year=años)
     
     return tb_nuevo
+
+
 
 
 
