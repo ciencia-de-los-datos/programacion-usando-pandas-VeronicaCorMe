@@ -189,10 +189,11 @@ def pregunta_09():
 
     """
     fechas=pd.to_datetime(tbl0._c3,infer_datetime_format=True, errors= "ignore" )
-    años=[int(x[:4]) for x in fechas]
+    años=[(x[:4]) for x in fechas]
     tb_nuevo=tbl0.assign(year=años)
     
     return tb_nuevo
+
 
 
 
@@ -215,23 +216,8 @@ def pregunta_10():
     """
     
  
-    _c0=[letras for letras in tbl0._c1 ]
-    _c1=[]
-    datos=[]
-    _c0= sorted(set(_c0))
     
-    valores=""
-    
-    for y in _c0:
-      for x in sorted(tbl0._c2[tbl0['_c1'].str.contains(y)]):
-        if valores=="":
-          valores=str(x)
-        else:
-          valores = str(valores) +":"+str(x)      
-      datos.append((y,valores))
-      valores=""
-    
-    return pd.DataFrame(data=(datos), columns=("_c0","_c1"))
+    return
 
 
 def pregunta_11():
