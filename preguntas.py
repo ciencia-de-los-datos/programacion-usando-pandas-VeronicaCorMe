@@ -162,7 +162,15 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
-    return
+#
+# Una nueva columna
+#
+    tb_nuevo=tbl0.assign(suma=tbl0._c0 +tbl0._c2)
+
+    return tb_nuevo
+       
+
+
 
 
 def pregunta_09():
@@ -180,7 +188,12 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    return
+    años=[int(x[:4]) for x in tbl0._c3]
+    tb_nuevo=tbl0.assign(year=años)
+    
+    return tb_nuevo
+
+
 
 
 def pregunta_10():
@@ -197,7 +210,25 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return
+    
+ 
+    _c0=[letras for letras in tbl0._c1 ]
+    _c1=[]
+    datos=[]
+    _c0= sorted(set(_c0))
+    
+    valores=""
+    
+    for y in _c0:
+      for x in sorted(tbl0._c2[tbl0['_c1'].str.contains(y)]):
+        if valores=="":
+          valores=str(x)
+        else:
+          valores = str(valores) +":"+str(x)      
+      datos.append((y,valores))
+      valores=""
+    
+    return pd.DataFrame(data=(datos), columns=("_c0","_c1"))
 
 
 def pregunta_11():
