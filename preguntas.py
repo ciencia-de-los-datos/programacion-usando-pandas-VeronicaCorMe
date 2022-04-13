@@ -214,10 +214,20 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
+    #filtro de la base de datos las columnas 1 y 2
+
+    datos= tbl0.filter(items=("_c1","_c2"))
+    #para que los numeros salgan en orden, debo ordenar la base de dartos de acuerdo a los numeros en _c2
+    datos=datos.sort_values("_c2")
+    #convierto los valores de _c2 a string
+    datos["_c2"]= datos["_c2"].astype(str)
+    #creo la tabla con un groupby con c2 como valores, 
+    # uso agregate para añadir a cada valor de c1 sus valores en c2 un diccionario que tenga los valores unidos con :
+    tabla= datos.groupby(["_c1"],as_index=False).aggregate({"_c2":":".join})
+    #establesco un  C1 como index
+    tabla.set_index("_c1", inplace=True)
     
- 
-    
-    return
+    return tabla
 
 
 def pregunta_11():
