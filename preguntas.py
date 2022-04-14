@@ -247,7 +247,7 @@ def pregunta_11():
     39   39    a,d,f
     """
     datos=tbl1.sort_values("_c4")
-    tabla=datos.groupby(["_c0"]).aggregate({"_c4":",".join})
+    tabla=datos.groupby(["_c0"], as_index=False).aggregate({"_c4":",".join})
     
     return tabla
 
@@ -271,7 +271,8 @@ def pregunta_12():
     _c5= [(x[1]+":"+str(x[2])) for x in tbl2.values]
     datos=tbl2.assign(_c5=_c5)
     datos=datos.sort_values("_c5")
-    tabla=datos.groupby("_c0").aggregate({"_c5":",".join})
+    tabla=datos.groupby(("_c0"), as_index=False).aggregate({"_c5":",".join})
+
 
     return tabla
 
