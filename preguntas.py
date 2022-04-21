@@ -22,7 +22,14 @@ def pregunta_01():
     40
 
     """
-    return
+    #la importacion de pandas permite la lectura de archivos csv directamente como "data frames" de ahi que podamos aplicar
+    # metodos y funciones propios de objetos directamente a la variable que contiene los datos sin tener que recorrerla.
+    #el truco es que se entiende cada elemento de la base de datos como un elemento con un tipo determinado
+    # y no como strings o cadenas de texto
+
+    len_t=len(tbl0)
+    return len_t
+
 
 
 def pregunta_02():
@@ -33,7 +40,12 @@ def pregunta_02():
     4
 
     """
-    return
+    #el metodo .shape devuelve una tupla (fila, columnas) del archivo csv, por lectura de tuplas si solo
+    # se necesitan las columnas, solo se necesita tomar el elemento 2 de la tupla generada por .shape 
+    cant_col=tbl0.shape
+
+    return cant_col[1]
+
 
 
 def pregunta_03():
@@ -50,7 +62,12 @@ def pregunta_03():
     Name: _c1, dtype: int64
 
     """
-    return
+    conteo_c1=tbl0._c1.sort_values()
+    conteo_c1= conteo_c1.value_counts(sort= False)
+    
+    
+    return  conteo_c1
+    
 
 
 def pregunta_04():
@@ -65,7 +82,9 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
-    return
+    meanc2= tbl0.groupby("_c1")["_c2"].mean()
+    return meanc2
+
 
 
 def pregunta_05():
@@ -82,7 +101,12 @@ def pregunta_05():
     E    9
     Name: _c2, dtype: int64
     """
-    return
+
+    max_c2= tbl0.groupby("_c1")["_c2"].max()
+
+    return max_c2
+
+
 
 
 def pregunta_06():
@@ -94,7 +118,12 @@ def pregunta_06():
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
-    return
+
+    col4= [x.upper() for x in tbl1._c4]
+    val_unico= sorted(set(col4))
+    
+    return val_unico
+
 
 
 def pregunta_07():
@@ -110,7 +139,12 @@ def pregunta_07():
     E    67
     Name: _c2, dtype: int64
     """
-    return
+
+    suma_c2=tbl0.groupby("_c1")["_c2"].sum()
+    return suma_c2
+
+
+
 
 
 def pregunta_08():
@@ -128,7 +162,15 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
-    return
+#
+# Una nueva columna
+#
+    tb_nuevo=tbl0.assign(suma=tbl0._c0 +tbl0._c2)
+
+    return tb_nuevo
+       
+
+
 
 
 def pregunta_09():
@@ -146,7 +188,16 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    return
+    fechas=pd.to_datetime(tbl0._c3,infer_datetime_format=True, errors= "ignore" )
+    años=[(x[:4]) for x in fechas]
+    tb_nuevo=tbl0.assign(year=años)
+    
+    return tb_nuevo
+
+
+
+
+
 
 
 def pregunta_10():
@@ -163,7 +214,20 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return
+    #filtro de la base de datos las columnas 1 y 2
+
+    datos= tbl0.filter(items=("_c1","_c2"))
+    #para que los numeros salgan en orden, debo ordenar la base de dartos de acuerdo a los numeros en _c2
+    datos=datos.sort_values("_c2")
+    #convierto los valores de _c2 a string
+    datos["_c2"]= datos["_c2"].astype(str)
+    #creo la tabla con un groupby con c2 como valores, 
+    # uso agregate para añadir a cada valor de c1 sus valores en c2 un diccionario que tenga los valores unidos con :
+    tabla= datos.groupby(["_c1"],as_index=False).aggregate({"_c2":":".join})
+    #establesco un  C1 como index
+    tabla.set_index("_c1", inplace=True)
+    
+    return tabla
 
 
 def pregunta_11():
@@ -182,7 +246,10 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    return
+    datos=tbl1.sort_values("_c4")
+    tabla=datos.groupby(["_c0"], as_index=False).aggregate({"_c4":",".join})
+    
+    return tabla
 
 
 def pregunta_12():
@@ -199,8 +266,16 @@ def pregunta_12():
     37   37                    eee:0,fff:2,hhh:6
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
+
     """
-    return
+    _c5= [(x[1]+":"+str(x[2])) for x in tbl2.values]
+    datos=tbl2.assign(_c5=_c5)
+    datos=datos.sort_values("_c5")
+    tabla=datos.groupby(("_c0"), as_index=False).aggregate({"_c5":",".join})
+
+
+    return tabla
+
 
 
 def pregunta_13():
@@ -216,5 +291,9 @@ def pregunta_13():
     D    112
     E    275
     Name: _c5b, dtype: int64
+
     """
-    return
+    datos= pd.merge(tbl0,tbl2, on="_c0")
+    suma_c5b=datos.groupby("_c1")["_c5b"].sum()
+    return suma_c5b
+
